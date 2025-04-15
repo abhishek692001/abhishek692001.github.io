@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishek Zinzuvadiya | Software Engineer</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/css/3d.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --primary: #4287f5;
+            --primary-dark: #2563eb;
+            --secondary: #38bdf8;
+            --accent: #f59e0b;
+            --copper: #d97706;
+            --silicon: #0ea5e9;
+            --silicon-dark: #0369a1;
+            --gold: #fbbf24;
+            --circuit: #22c55e;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --transition: all 0.3s ease;
+        }
+        
+        .dark {
+            --primary: #60a5fa;
+            --primary-dark: #3b82f6;
+            --secondary: #38bdf8;
+            --accent: #fbbf24;
+            --copper: #d97706;
+            --silicon: #38bdf8;
+            --silicon-dark: #0ea5e9;
+            --gold: #fcd34d;
+            --circuit: #4ade80;
+            --dark: #f8fafc;
+            --darker: #f1f5f9;
+            --light: #0f172a;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            transition: var(--transition);
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        h1, h2, h3, .gradient-text, .section-heading {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        /* Circuit Background */
+        .circuit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.07;
+            background-image: url('https://cdn.jsdelivr.net/gh/abhishekzinzuvadiya/portfolio-assets@main/circuit-pattern.svg');
+            background-size: cover;
+        }
+        
+        .dark .circuit-bg {
+            opacity: 0.05;
+        }
+        
+        /* Particles Container */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .navbar.scrolled {
+            background: rgba(248, 250, 252, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--silicon);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            width: 100%;
+        }
+        
+        /* 3D Card Styles */
+        .card-3d {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.1),
+                        0 4px 25px 0px rgba(0, 0, 0, 0.1),
+                        0 8px 10px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(14, 165, 233, 0.05), rgba(59, 130, 246, 0.05));
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .dark .card-3d {
+            box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.2),
+                        0 4px 25px 0px rgba(0, 0, 0, 0.2),
+                        0 8px 10px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.2),
+                        0 8px 35px 0px rgba(0, 0, 0, 0.15),
+                        0 12px 15px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .card-3d:hover {
+            box-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.3),
+                        0 8px 35px 0px rgba(0, 0, 0, 0.25),
+                        0 12px 15px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Circuit Hover Effect */
+        .circuit-hover {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .circuit-hover::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150%;
+            height: 150%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(14, 165, 233, 0),
+                rgba(14, 165, 233, 0) 5px,
+                rgba(14, 165, 233, 0.05) 5px,
+                rgba(14, 165, 233, 0.05) 10px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                rgba(14, 165, 233, 0),
+                rgba(14, 165, 233, 0) 5px,
+                rgba(14, 165, 233, 0.05) 5px,
+                rgba(14, 165, 233, 0.05) 10px
+            );
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            z-index: -1;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            border-radius: inherit;
+        }
+        
+        .circuit-hover:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        
+        /* Skill Item */
+        .skill-item {
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            z-index: 1;
+        }
+        
+        .skill-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--silicon), var(--primary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .skill-item:hover::after {
+            transform: scaleX(1);
+        }
+        
+        /* Project Card */
+        .project-card {
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            background-image: linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            z-index: 1;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://cdn.jsdelivr.net/gh/abhishekzinzuvadiya/portfolio-assets@main/microchip-pattern.svg');
+            background-size: cover;
+            opacity: 0.05;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px) perspective(800px) rotateX(2deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        /* Button Styles */
+        .button-primary {
+            background: linear-gradient(90deg, var(--silicon-dark), var(--silicon));
+            color: white;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border: none;
+        }
+        
+        .button-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .button-primary:hover::before {
+            left: 100%;
+            transition: 0.7s;
+        }
+        
+        .button-primary:hover {
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--silicon), var(--primary), var(--copper));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+        }
+        
+        /* Timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--silicon), var(--primary));
+            box-shadow: 0 0 10px var(--silicon);
+            z-index: 1;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 22px;
+            width: 2px;
+            height: calc(100% - 15px);
+            background: linear-gradient(to bottom, var(--silicon), rgba(59, 130, 246, 0.2));
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        /* Section Heading */
+        .section-heading {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--silicon), var(--primary), var(--copper));
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Animated Circuit Path */
+        .circuit-path {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--silicon), var(--primary), var(--silicon), transparent);
+            opacity: 0.5;
+            z-index: -1;
+            transform: translateY(-50%);
+        }
+        
+        .circuit-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--silicon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--silicon);
+            top: 50%;
+            transform: translateY(-50%);
+            animation: pulseNode 3s infinite;
+        }
+        
+        .circuit-node-1 {
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .circuit-node-2 {
+            left: 30%;
+            animation-delay: 0.5s;
+        }
+        
+        .circuit-node-3 {
+            left: 50%;
+            animation-delay: 1s;
+        }
+        
+        .circuit-node-4 {
+            left: 70%;
+            animation-delay: 1.5s;
+        }
+        
+        .circuit-node-5 {
+            left: 90%;
+            animation-delay: 2s;
+        }
+        
+        @keyframes pulseNode {
+            0% {
+                transform: translateY(-50%) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50%) scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* 3D Chip Element */
+        .chip-3d-container {
+            perspective: 1000px;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            right: 10%;
+            bottom: 10%;
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .chip-3d-container {
+                display: block;
+            }
+        }
+        
+        .chip-3d {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: rotate3d 15s infinite linear;
+        }
+        
+        .chip-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border: 2px solid var(--silicon);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+        }
+        
+        .chip-front {
+            transform: translateZ(10px);
+            background: rgba(14, 165, 233, 0.1);
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(14, 165, 233, 0.3) 25%, rgba(14, 165, 233, 0.3) 26%, transparent 27%, transparent 74%, rgba(14, 165, 233, 0.3) 75%, rgba(14, 165, 233, 0.3) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(14, 165, 233, 0.3) 25%, rgba(14, 165, 233, 0.3) 26%, transparent 27%, transparent 74%, rgba(14, 165, 233, 0.3) 75%, rgba(14, 165, 233, 0.3) 76%, transparent 77%, transparent);
+            background-size: 20px 20px;
+        }
+        
+        .chip-back {
+            transform: rotateY(180deg) translateZ(10px);
+            background: rgba(14, 165, 233, 0.1);
+        }
+        
+        .chip-top {
+            transform: rotateX(90deg) translateZ(10px);
+            background: rgba(14, 165, 233, 0.2);
+        }
+        
+        .chip-bottom {
+            transform: rotateX(-90deg) translateZ(10px);
+            background: rgba(14, 165, 233, 0.2);
+        }
+        
+        .chip-left {
+            transform: rotateY(-90deg) translateZ(10px);
+            background: rgba(14, 165, 233, 0.2);
+        }
+        
+        .chip-right {
+            transform: rotateY(90deg) translateZ(10px);
+            background: rgba(14, 165, 233, 0.2);
+        }
+        
+        @keyframes rotate3d {
+            0% {
+                transform: rotateX(0) rotateY(0) rotateZ(0);
+            }
+            100% {
+                transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+            }
+        }
+        
+        /* Loader */
+        .loader {
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .loader::before, .loader::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--silicon), var(--primary));
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        .loader::after {
+            animation-delay: 0.75s;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        
+        /* Scroll To Top */
+        .scrollToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            background: linear-gradient(135deg, var(--silicon), var(--primary));
+            border: none;
+            overflow: hidden;
+        }
+        
+        .scrollToTop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scrollToTop::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: var(--transition);
+        }
+        
+        .scrollToTop:hover::before {
+            left: 100%;
+            transition: 0.7s;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--silicon), var(--primary));
+            border-radius: 8px;
+        }
+        
+        /* Hero Image Frame */
+        .hero-image-frame {
+            position: relative;
+            border: 2px solid var(--silicon);
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.2);
+            animation: pulse-frame 3s infinite alternate;
+        }
+        
+        @keyframes pulse-frame {
+            0% {
+                box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
+            }
+            100% {
+                box-shadow: 0 0 35px rgba(14, 165, 233, 0.4);
+            }
+        }
+        
+        /* Glitch Effect for Text */
+        .glitch-text {
+            position: relative;
+            animation: glitch 5s infinite;
+        }
+        
+        @keyframes glitch {
+            0% {
+                text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.3), -0.05em -0.025em 0 rgba(0, 255, 0, 0.3), -0.025em 0.05em 0 rgba(0, 0, 255, 0.3);
+            }
+            15% {
+                text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.3), 0.025em 0.025em 0 rgba(0, 255, 0, 0.3), -0.05em -0.05em 0 rgba(0, 0, 255, 0.3);
+            }
+            50% {
+                text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.3), 0.05em 0 0 rgba(0, 255, 0, 0.3), 0 -0.05em 0 rgba(0, 0, 255, 0.3);
+            }
+            100% {
+                text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.3), -0.025em -0.025em 0 rgba(0, 255, 0, 0.3), -0.025em -0.05em 0 rgba(0, 0, 255, 0.3);
+            }
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            border-radius: 12px;
+            background: linear-gradient(to right, #0f172a, #0ea5e9);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .dark .theme-toggle {
+            background: linear-gradient(to right, #60a5fa, #f8fafc);
+        }
+        
+        .theme-toggle-circle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fbbf24;
+            background-image: radial-gradient(circle at 70% 30%, #fef3c7 0%, #fbbf24 50%);
+            transition: var(--transition);
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+            transform: translateX(0);
+        }
+        
+        .dark .theme-toggle-circle {
+            transform: translateX(26px);
+            background-color: #64748b;
+            background-image: radial-gradient(circle at 30% 30%, #cbd5e1 0%, #64748b 50%);
+            box-shadow: 0 0 10px rgba(100, 116, 139, 0.5);
+        }
+        
+        .theme-toggle-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: #1e293b;
+        }
+        
+        .dark .theme-toggle-icon {
+            color: #f1f5f9;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            transition: var(--transition);
+            transform: translateX(-100%);
+            background-image: linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        /* Certification Card */
+        .cert-card {
+            position: relative;
+            transition: var(--transition);
+            border: 1px solid rgba(14, 165, 233, 0.1);
+            overflow: hidden;
+        }
+        
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                transparent, 
+                transparent, 
+                var(--silicon)
+            );
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+        
+        .cert-card::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: var(--light);
+            z-index: -1;
+            border-radius: inherit;
+        }
+        
+        .dark .cert-card::after {
+            background: var(--light);
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Transistor Icon */
+        .transistor-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            margin: 0 auto;
+        }
+        
+        .transistor-icon span {
+            position: absolute;
+            background: var(--silicon);
+        }
+        
+        .transistor-icon span:nth-child(1) {
+            top: 0;
+            left: 11px;
+            width: 2px;
+            height: 8px;
+        }
+        
+        .transistor-icon span:nth-child(2) {
+            top: 8px;
+            left: 0;
+            width: 24px;
+            height: 2px;
+        }
+        
+        .transistor-icon span:nth-child(3) {
+            bottom: 0;
+            left: 11px;
+            width: 2px;
+            height: 8px;
+        }
+        
+        .transistor-icon span:nth-child(4) {
+            top: 10px;
+            left: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--copper);
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Circuit Background -->
+    <div class="circuit-bg"></div>
+    
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-900 z-50">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed top-0 left-0 w-full z-40 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#home" class="text-xl font-bold gradient-text">Abhishek Z.</a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#home" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
+                <a href="#about" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a>
+                <a href="#experience" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Experience</a>
+                <a href="#education" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Education</a>
+                <a href="#skills" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Skills</a>
+                <a href="#projects" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Projects</a>
+                <a href="#certifications" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Certifications</a>
+                <a href="#contact" class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
+                
+                <div id="themeToggle" class="theme-toggle focus:outline-none">
+                    <div class="theme-toggle-circle">
+                        <i class="ri-sun-line theme-toggle-icon dark:hidden"></i>
+                        <i class="ri-moon-line theme-toggle-icon hidden dark:block"></i>
+                    </div>
+                </div>
+                
+                <a href="#" id="downloadResume" class="button-primary px-4 py-2 rounded-md flex items-center overflow-hidden">
+                    <i class="ri-download-line mr-1"></i> Resume
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="md:hidden p-2 focus:outline-none">
+                <i class="ri-menu-line text-2xl text-gray-700 dark:text-gray-300"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-900 shadow-lg z-50 p-6 flex flex-col md:hidden">
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-xl font-bold gradient-text">Menu</span>
+            <button id="closeMobileMenu" class="focus:outline-none">
+                <i class="ri-close-line text-2xl text-gray-700 dark:text-gray-300"></i>
+            </button>
+        </div>
+        
+        <div class="flex flex-col space-y-4">
+            <a href="#home" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
+            <a href="#about" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a>
+            <a href="#experience" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Experience</a>
+            <a href="#education" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Education</a>
+            <a href="#skills" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Skills</a>
+            <a href="#projects" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Projects</a>
+            <a href="#certifications" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Certifications</a>
+            <a href="#contact" class="mobile-nav-link text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
+        </div>
+        
+        <div class="mt-auto flex items-center justify-between">
+            <div id="mobileThemeToggle" class="theme-toggle focus:outline-none">
+                <div class="theme-toggle-circle">
+                    <i class="ri-sun-line theme-toggle-icon dark:hidden"></i>
+                    <i class="ri-moon-line theme-toggle-icon hidden dark:block"></i>
+                </div>
+            </div>
+            
+            <a href="#" id="mobileDownloadResume" class="button-primary px-4 py-2 rounded-md flex items-center overflow-hidden">
+                <i class="ri-download-line mr-1"></i> Resume
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center pt-16 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 py-16 z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right" data-aos-delay="100">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                        Hi, I'm <span class="gradient-text glitch-text">Abhishek Zinzuvadiya</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl text-gray-600 dark:text-gray-400 mb-6">Software Engineer at Cadence Design Systems</h2>
+                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
+                        Specializing in digital design and verification with expertise in Verilog HDL, 
+                        System Verilog, and UVM. Passionate about creating innovative solutions in 
+                        the field of VLSI and embedded systems.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#contact" class="button-primary px-6 py-3 rounded-lg flex items-center circuit-hover">
+                            <i class="ri-mail-line mr-2"></i> Contact Me
+                        </a>
+                        <a href="#projects" class="px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center circuit-hover">
+                            <i class="ri-code-box-line mr-2"></i> View Projects
+                        </a>
+                    </div>
+                    <div class="flex mt-8 space-x-4">
+                        <a href="https://www.linkedin.com/in/abhishek-zinzuvadiya/" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            <i class="ri-linkedin-box-fill text-2xl"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                            <i class="ri-github-fill text-2xl"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-blue-400 dark:hover:text-blue-300 transition-colors">
+                            <i class="ri-twitter-fill text-2xl"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors">
+                            <i class="ri-instagram-fill text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center relative" data-aos="fade-left" data-aos-delay="300">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden hero-image-frame">
+                            <img src="https://media.licdn.com/dms/image/v2/D4D03AQEkbNNQi_lBOA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1673348014829?e=1749686400&v=beta&t=ck3fc0gKL5azijFHnG21PB6Fx2M4_shSu4xHZQiK3jU" 
+                                 alt="Abhishek Zinzuvadiya" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-4 -right-4 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md transform transition-transform hover:scale-110">
+                            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-cyan-400">
+                                <i class="ri-circuit-board-line text-white text-2xl"></i>
+                            </span>
+                        </div>
+                        
+                        <!-- 3D Chip Element -->
+                        <div class="chip-3d-container">
+                            <div class="chip-3d">
+                                <div class="chip-face chip-front"></div>
+                                <div class="chip-face chip-back"></div>
+                                <div class="chip-face chip-top"></div>
+                                <div class="chip-face chip-bottom"></div>
+                                <div class="chip-face chip-left"></div>
+                                <div class="chip-face chip-right"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50 dark:bg-gray-800 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path" style="top: 30%">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <h2 class="text-3xl font-bold mb-16 text-center section-heading">About Me</h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right" data-aos-delay="100">
+                    <div class="card-3d rounded-lg overflow-hidden">
+                        <img src="https://media.licdn.com/dms/image/v2/D4D16AQHNTp0lqZ6nww/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1689338713579?e=1749686400&v=beta&t=IeIAIOD_P8xZqzv1m8P--MfKVzqr8H-T3pv89Yj-sXE" 
+                             alt="Background Image" class="rounded-lg shadow-lg w-full">
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12" data-aos="fade-left" data-aos-delay="300">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Professional Summary</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                        I am a Software Engineer at Cadence Design Systems with extensive experience in digital 
+                        design and verification. My technical expertise includes Verilog HDL, System Verilog, 
+                        Universal Verification Methodology (UVM), C/C++, Python, and more.
+                    </p>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                        With a strong foundation in Electronics and Communications Engineering from Nirma University, 
+                        I specialize in developing and implementing digital solutions for complex systems. 
+                        I am passionate about creating innovative and efficient solutions in the field of 
+                        VLSI and embedded systems.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="card-3d p-4 rounded-lg bg-white dark:bg-gray-900 circuit-hover">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Name:</h4>
+                            <p class="text-gray-700 dark:text-gray-300">Abhishek Zinzuvadiya</p>
+                        </div>
+                        <div class="card-3d p-4 rounded-lg bg-white dark:bg-gray-900 circuit-hover">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Email:</h4>
+                            <p class="text-gray-700 dark:text-gray-300"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1273707a7b617a77793c6852776a737f627e773c717d7f">[email&#160;protected]</a></p>
+                        </div>
+                        <div class="card-3d p-4 rounded-lg bg-white dark:bg-gray-900 circuit-hover">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Location:</h4>
+                            <p class="text-gray-700 dark:text-gray-300">India</p>
+                        </div>
+                        <div class="card-3d p-4 rounded-lg bg-white dark:bg-gray-900 circuit-hover">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Availability:</h4>
+                            <p class="text-gray-700 dark:text-gray-300">Full-time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path" style="top: 70%">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <h2 class="text-3xl font-bold mb-16 text-center section-heading">Work Experience</h2>
+            <div class="max-w-3xl mx-auto">
+                <div class="timeline-item card-3d p-6 rounded-lg bg-white dark:bg-gray-900" data-aos="fade-up" data-aos-delay="100">
+                    <div class="mb-2">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Software Engineer - I</h3>
+                        <p class="text-gray-600 dark:text-gray-400 flex items-center">
+                            <i class="ri-building-line mr-2"></i> Cadence Design Systems
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500 flex items-center mt-1">
+                            <i class="ri-calendar-line mr-2"></i> July 2023 - Present
+                        </p>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        Currently working on the I3C (Improved Inter Integrated Circuit) project. 
+                        Responsibilities include developing and debugging Verilog code, implementing 
+                        System Verilog for verification, and applying UVM methodology for 
+                        comprehensive testing and validation.
+                    </p>
+                </div>
+                
+                <div class="timeline-item card-3d p-6 rounded-lg bg-white dark:bg-gray-900" data-aos="fade-up" data-aos-delay="200">
+                    <div class="mb-2">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Software Intern</h3>
+                        <p class="text-gray-600 dark:text-gray-400 flex items-center">
+                            <i class="ri-building-line mr-2"></i> Cadence Design Systems
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500 flex items-center mt-1">
+                            <i class="ri-calendar-line mr-2"></i> January 2023 - June 2023
+                        </p>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        Worked on UFS Development, gaining hands-on experience with industry-standard 
+                        tools and methodologies. Enhanced skills in debugging and verification techniques 
+                        for complex systems.
+                    </p>
+                </div>
+                
+                <div class="timeline-item card-3d p-6 rounded-lg bg-white dark:bg-gray-900" data-aos="fade-up" data-aos-delay="300">
+                    <div class="mb-2">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">RTL Design & Verification Training</h3>
+                        <p class="text-gray-600 dark:text-gray-400 flex items-center">
+                            <i class="ri-building-line mr-2"></i> Semi Design
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500 flex items-center mt-1">
+                            <i class="ri-calendar-line mr-2"></i> June 2022 - October 2022
+                        </p>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        Received comprehensive training in RTL design and verification techniques. 
+                        Learned advanced digital logic design concepts and verification methodologies 
+                        used in the semiconductor industry.
+                    </p>
+                </div>
+                
+                <div class="timeline-item card-3d p-6 rounded-lg bg-white dark:bg-gray-900" data-aos="fade-up" data-aos-delay="400">
+                    <div class="mb-2">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">ASIC Intern (Summer Intern)</h3>
+                        <p class="text-gray-600 dark:text-gray-400 flex items-center">
+                            <i class="ri-building-line mr-2"></i> eInfochips
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500 flex items-center mt-1">
+                            <i class="ri-calendar-line mr-2"></i> May 2022 - July 2022
+                        </p>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        Assisted in ASIC design activities, learned about industry-standard design flows, 
+                        and contributed to development tasks under supervision. Gained practical experience 
+                        in semiconductor design processes.
+                    </p>
+                </div>
+                
+                <div class="timeline-item card-3d p-6 rounded-lg bg-white dark:bg-gray-900" data-aos="fade-up" data-aos-delay="500">
+                    <div class="mb-2">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Digital Marketing Intern</h3>
+                        <p class="text-gray-600 dark:text-gray-400 flex items-center">
+                            <i class="ri-building-line mr-2"></i> Techinquiri
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500 flex items-center mt-1">
+                            <i class="ri-calendar-line mr-2"></i> April 2021 - June 2021
+                        </p>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        Learned about content placement strategies and organizational techniques 
+                        for effective digital marketing. Developed skills in content creation 
+                        and management for online platforms.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20 bg-gray-50 dark:bg-gray-800 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path" style="top: 40%">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <h2 class="text-3xl font-bold mb-16 text-center section-heading">Education</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="flip-up" data-aos-delay="100">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 mb-4 mx-auto">
+                        <i class="ri-graduation-cap-line text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-2 text-gray-900 dark:text-white">Bachelor's Degree</h3>
+                    <p class="text-center text-gray-600 dark:text-gray-400 mb-4">Electronics and Communications Engineering</p>
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <p class="flex items-center text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="ri-building-4-line mr-2"></i> Nirma University
+                        </p>
+                        <p class="flex items-center text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="ri-calendar-line mr-2"></i> January 2019 - January 2023
+                        </p>
+                        <p class="flex items-center text-gray-700 dark:text-gray-300">
+                            <i class="ri-star-line mr-2"></i> Grade: 7.89
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="flip-up" data-aos-delay="200">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 mb-4 mx-auto">
+                        <i class="ri-book-open-line text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-2 text-gray-900 dark:text-white">Higher Secondary</h3>
+                    <p class="text-center text-gray-600 dark:text-gray-400 mb-4">Science (11th - 12th)</p>
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <p class="flex items-center text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="ri-building-4-line mr-2"></i> Alpha High School
+                        </p>
+                        <p class="flex items-center text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="ri-calendar-line mr-2"></i> 2017 - 2019
+                        </p>
+                        <p class="flex items-center text-gray-700 dark:text-gray-300">
+                            <i class="ri-star-line mr-2"></i> Score: 91%
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="flip-up" data-aos-delay="300">
+                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 mb-4 mx-auto">
+                        <i class="ri-book-line text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-2 text-gray-900 dark:text-white">Secondary Education</h3>
+                    <p class="text-center text-gray-600 dark:text-gray-400 mb-4">Standard 1 to 10</p>
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <p class="flex items-center text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="ri-building-4-line mr-2"></i> Lions Higher Secondary School, Manavadar
+                        </p>
+                        <p class="flex items-center text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="ri-calendar-line mr-2"></i> 2007 - 2017
+                        </p>
+                        <p class="flex items-center text-gray-700 dark:text-gray-300">
+                            <i class="ri-star-line mr-2"></i> Score: 76.5%
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path" style="top: 60%">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <h2 class="text-3xl font-bold mb-16 text-center section-heading">My Skills</h2>
+            
+            <div class="mb-12">
+                <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white">Technical Skills</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mb-3">
+                            <i class="ri-code-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">Verilog HDL</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="150">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-3">
+                            <i class="ri-code-s-slash-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">System Verilog</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-3">
+                            <i class="ri-test-tube-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">UVM</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="250">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mb-3">
+                            <i class="ri-braces-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">C/C++</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mb-3">
+                            <i class="ri-python-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">Python</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="350">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-3">
+                            <i class="ri-html5-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">HTML</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center mb-3">
+                            <i class="ri-cpu-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">Digital Electronics</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="450">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center mb-3">
+                            <i class="ri-server-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">Computer Architecture</h4>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white">Additional Skills</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="500">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mb-3">
+                            <i class="ri-bug-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">Debugging</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="550">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-3">
+                            <i class="ri-radar-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">Simulation</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="600">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-3">
+                            <i class="ri-image-2-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">Image Processing</h4>
+                    </div>
+                    
+                    <div class="skill-item card-3d bg-white dark:bg-gray-900 p-4 rounded-lg flex flex-col items-center circuit-hover" data-aos="zoom-in" data-aos-delay="650">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mb-3">
+                            <i class="ri-circuit-board-line text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-gray-900 dark:text-white text-center">VLSI Technology</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-800 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path" style="top: 30%">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <h2 class="text-3xl font-bold mb-16 text-center section-heading">My Projects</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="project-card card-3d bg-white dark:bg-gray-900 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-gradient-to-r from-blue-500 to-cyan-400 flex items-center justify-center relative overflow-hidden">
+                        <div class="transistor-icon absolute top-4 right-4">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <i class="ri-cpu-line text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">UART Transmission with Encryption</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            A novel Verilog implementation of UART transmission with encryption and 
+                            Single Error Correction capabilities.
+                        </p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mr-2 mb-2">Verilog HDL</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-2 mb-2">Computer Architecture</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 mb-2">Simulation</span>
+                        </div>
+                        <a href="#" class="inline-block text-blue-600 dark:text-blue-400 hover:underline circuit-hover">View Project <i class="ri-arrow-right-line ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card card-3d bg-white dark:bg-gray-900 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-gradient-to-r from-purple-500 to-indigo-400 flex items-center justify-center relative overflow-hidden">
+                        <div class="transistor-icon absolute top-4 right-4">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <i class="ri-hand-coin-line text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Hand Gesture Recognition</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            A system that recognizes hand gestures using computer vision techniques
+                            for human-computer interaction applications.
+                        </p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mr-2 mb-2">Python</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-2 mb-2">Computer Vision</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 mb-2">Image Processing</span>
+                        </div>
+                        <a href="#" class="inline-block text-blue-600 dark:text-blue-400 hover:underline circuit-hover">View Project <i class="ri-arrow-right-line ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card card-3d bg-white dark:bg-gray-900 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                    <div class="h-48 bg-gradient-to-r from-green-500 to-emerald-400 flex items-center justify-center relative overflow-hidden">
+                        <div class="transistor-icon absolute top-4 right-4">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <i class="ri-bitcoin-line text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Cryptocurrency Dashboard</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            A dashboard for monitoring cryptocurrency prices, trends, and market 
+                            indicators with real-time updates.
+                        </p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mr-2 mb-2">Python</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-2 mb-2">Data Visualization</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 mb-2">APIs</span>
+                        </div>
+                        <a href="#" class="inline-block text-blue-600 dark:text-blue-400 hover:underline circuit-hover">View Project <i class="ri-arrow-right-line ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card card-3d bg-white dark:bg-gray-900 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                    <div class="h-48 bg-gradient-to-r from-red-500 to-orange-400 flex items-center justify-center relative overflow-hidden">
+                        <div class="transistor-icon absolute top-4 right-4">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <i class="ri-car-line text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Vehicle Number Plate Detection</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            A system for detecting and recognizing vehicle number plates using 
+                            MATLAB and Python with image processing techniques.
+                        </p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mr-2 mb-2">MATLAB</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-2 mb-2">Python</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 mb-2">Image Processing</span>
+                        </div>
+                        <a href="#" class="inline-block text-blue-600 dark:text-blue-400 hover:underline circuit-hover">View Project <i class="ri-arrow-right-line ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card card-3d bg-white dark:bg-gray-900 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="500">
+                    <div class="h-48 bg-gradient-to-r from-yellow-500 to-amber-400 flex items-center justify-center relative overflow-hidden">
+                        <div class="transistor-icon absolute top-4 right-4">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <i class="ri-wireless-charging-line text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Voice Transmission System</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            A voice transmission system based on laser torch technology for 
+                            secure communication applications.
+                        </p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mr-2 mb-2">Analog Design</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-2 mb-2">Electronics</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 mb-2">Communication</span>
+                        </div>
+                        <a href="#" class="inline-block text-blue-600 dark:text-blue-400 hover:underline circuit-hover">View Project <i class="ri-arrow-right-line ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card card-3d bg-white dark:bg-gray-900 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="600">
+                    <div class="h-48 bg-gradient-to-r from-indigo-500 to-violet-400 flex items-center justify-center relative overflow-hidden">
+                        <div class="transistor-icon absolute top-4 right-4">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <i class="ri-plant-line text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Smart Irrigation System</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            An automated irrigation system using an 8051 microcontroller that 
+                            optimizes water usage based on soil moisture levels.
+                        </p>
+                        <div class="flex flex-wrap mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mr-2 mb-2">Microcontroller</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-2 mb-2">Assembly</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 mb-2">Sensors</span>
+                        </div>
+                        <a href="#" class="inline-block text-blue-600 dark:text-blue-400 hover:underline circuit-hover">View Project <i class="ri-arrow-right-line ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="button-primary px-6 py-3 rounded-lg inline-flex items-center circuit-hover">
+                    <i class="ri-eye-line mr-2"></i> View All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="py-20 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path" style="top: 70%">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <h2 class="text-3xl font-bold mb-16 text-center section-heading">Certifications</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="cert-card card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 mr-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i class="ri-verified-badge-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white">Verilog HDL: VLSI Hardware Design</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Udemy</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Comprehensive masterclass covering all aspects of Verilog HDL for VLSI design.
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-500">
+                        License: UC-c470ed9c-84d1-4648-afd3-43969baeab61
+                    </p>
+                </div>
+                
+                <div class="cert-card card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="150">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 mr-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i class="ri-verified-badge-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white">VLSI Design: Processes, Devices and Circuits</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">IEEE-GGSIPU</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        In-depth course on VLSI design processes, semiconductor devices, and circuit design techniques.
+                    </p>
+                </div>
+                
+                <div class="cert-card card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 mr-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i class="ri-verified-badge-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white">AI-based Video Analytics</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Certification</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Training on artificial intelligence applications for video analysis and processing.
+                    </p>
+                </div>
+                
+                <div class="cert-card card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="250">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 mr-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i class="ri-verified-badge-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white">Image Processing Onramp</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">MathWorks</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Fundamental techniques and tools for digital image processing using MATLAB.
+                    </p>
+                </div>
+                
+                <div class="cert-card card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 mr-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i class="ri-verified-badge-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white">MATLAB Onramp</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">MathWorks</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Introduction to MATLAB programming environment and mathematical operations.
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-500">
+                        License: 6065f2da-bcfa-49a7-97d3-b48e059ed7f2
+                    </p>
+                </div>
+                
+                <div class="cert-card card-3d bg-white dark:bg-gray-900 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="350">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 mr-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i class="ri-verified-badge-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white">The Arduino Platform and C Programming</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Coursera</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Comprehensive course on Arduino hardware platform and C programming for embedded systems.
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-500">
+                        License: 6VHTK9HDRE4M
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="button-primary px-6 py-3 rounded-lg inline-flex items-center circuit-hover">
+                    <i class="ri-medal-line mr-2"></i> View All Certifications
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-800 relative overflow-hidden" data-aos="fade-up">
+        <div class="circuit-path" style="top: 40%">
+            <span class="circuit-node circuit-node-1"></span>
+            <span class="circuit-node circuit-node-2"></span>
+            <span class="circuit-node circuit-node-3"></span>
+            <span class="circuit-node circuit-node-4"></span>
+            <span class="circuit-node circuit-node-5"></span>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 relative">
+            <h2 class="text-3xl font-bold mb-16 text-center section-heading">Get In Touch</h2>
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8" data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Contact Information</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+                        Feel free to reach out to me for any professional inquiries, collaboration opportunities, 
+                        or just to say hello. I'm always open to discussing new projects and ideas.
+                    </p>
+                    
+                    <div class="flex items-start mb-6 card-3d p-4 rounded-lg bg-white dark:bg-gray-900">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mr-4 mt-1">
+                            <i class="ri-mail-line text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Email</h4>
+                            <p class="text-gray-700 dark:text-gray-300"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="11707379786279747a3f6b517469707c617d743f727e7c">[email&#160;protected]</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start mb-6 card-3d p-4 rounded-lg bg-white dark:bg-gray-900">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mr-4 mt-1">
+                            <i class="ri-linkedin-box-line text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-1">LinkedIn</h4>
+                            <a href="https://www.linkedin.com/in/abhishek-zinzuvadiya/" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">linkedin.com/in/abhishek-zinzuvadiya</a>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start card-3d p-4 rounded-lg bg-white dark:bg-gray-900">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mr-4 mt-1">
+                            <i class="ri-map-pin-line text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Location</h4>
+                            <p class="text-gray-700 dark:text-gray-300">India</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2" data-aos="fade-left" data-aos-delay="300">
+                    <form id="contactForm" class="card-3d bg-white dark:bg-gray-900 p-8 rounded-lg">
+                        <div class="mb-6">
+                            <label for="name" class="block text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="email" class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="subject" class="block text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="button-primary w-full py-3 rounded-lg font-medium flex items-center justify-center circuit-hover">
+                            <i class="ri-send-plane-line mr-2"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-br from-gray-900 to-blue-900 text-white py-12 relative overflow-hidden">
+        <div class="circuit-bg absolute inset-0 opacity-10"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-bold mb-2 gradient-text">Abhishek Zinzuvadiya</h2>
+                    <p class="text-gray-400">Software Engineer | Digital Design Specialist</p>
+                </div>
+                
+                <div class="flex space-x-6 mb-6 md:mb-0">
+                    <a href="https://www.linkedin.com/in/abhishek-zinzuvadiya/" target="_blank" class="text-gray-400 hover:text-white transition-colors circuit-hover">
+                        <i class="ri-linkedin-box-fill text-2xl"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-gray-400 hover:text-white transition-colors circuit-hover">
+                        <i class="ri-github-fill text-2xl"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-gray-400 hover:text-white transition-colors circuit-hover">
+                        <i class="ri-twitter-fill text-2xl"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-gray-400 hover:text-white transition-colors circuit-hover">
+                        <i class="ri-instagram-fill text-2xl"></i>
+                    </a>
+                </div>
+                
+                <div>
+                    <a href="#home" class="text-gray-400 hover:text-white transition-colors circuit-hover">Back to Top</a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-500">&copy; 2023 Abhishek Zinzuvadiya. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll To Top Button -->
+    <button id="scrollToTop" class="scrollToTop w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg">
+        <i class="ri-arrow-up-line text-xl"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        // Particles.js Configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#0ea5e9"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 2,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#0ea5e9",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+        
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // DOM Elements
+        const preloader = document.getElementById('preloader');
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        const contactForm = document.getElementById('contactForm');
+        const navbar = document.querySelector('.navbar');
+        
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                preloader.classList.add('opacity-0');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 300);
+            }, 500);
+        });
+        
+        // Theme Toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+            
+            // Update particles color based on theme
+            if (document.documentElement.classList.contains('dark')) {
+                if (window.pJSDom && window.pJSDom[0]) {
+                    window.pJSDom[0].pJS.particles.color.value = '#60a5fa';
+                    window.pJSDom[0].pJS.particles.line_linked.color = '#60a5fa';
+                    window.pJSDom[0].pJS.fn.particlesRefresh();
+                }
+            } else {
+                if (window.pJSDom && window.pJSDom[0]) {
+                    window.pJSDom[0].pJS.particles.color.value = '#0ea5e9';
+                    window.pJSDom[0].pJS.particles.line_linked.color = '#0ea5e9';
+                    window.pJSDom[0].pJS.fn.particlesRefresh();
+                }
+            }
+        }
+        
+        // Check for saved theme preference or set based on system preference
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (localStorage.getItem('darkMode') === null && 
+             window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        themeToggle.addEventListener('click', toggleDarkMode);
+        mobileThemeToggle.addEventListener('click', toggleDarkMode);
+        
+        // Mobile Menu
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        
+        closeMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+        
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+        
+        // Scroll To Top
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('active');
+                navbar.classList.add('scrolled');
+            } else {
+                scrollToTopBtn.classList.remove('active');
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Active Navigation Highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-blue-600', 'dark:text-blue-400', 'active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'active');
+                }
+            });
+        });
+        
+        // Contact Form
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would normally send the form data to your server
+            console.log('Form submitted:', { name, email, subject, message });
+            
+            // Show success message (in a real application)
+            alert('Thank you for your message! I will get back to you soon.');
+            
+            // Reset form
+            contactForm.reset();
+        });
+        
+        // Downloadable Resume (dummy function)
+        document.getElementById('downloadResume').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Resume download functionality would be implemented here');
+        });
+        
+        document.getElementById('mobileDownloadResume').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Resume download functionality would be implemented here');
+        });
+        
+        // 3D Card Effect
+        const cards = document.querySelectorAll('.card-3d');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
